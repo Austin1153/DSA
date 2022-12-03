@@ -1,0 +1,150 @@
+n = 100
+start time: 2289
+end time: 2375
+total time: 0.000086 sec
+
+n = 200
+start time: 3113
+end time: 3430
+total time: 0.000317 sec
+
+n = 300
+start time: 4940
+end time: 5670
+total time: 0.000730 sec
+
+n = 400
+start time: 8572
+end time: 9963
+total time: 0.001391 sec
+
+n = 500
+start time: 14443
+end time: 16497
+total time: 0.002054 sec
+
+n = 600
+start time: 23005
+end time: 25964
+total time: 0.002959 sec
+
+n = 700
+start time: 34980
+end time: 39051
+total time: 0.004071 sec
+
+n = 800
+start time: 51420
+end time: 56736
+total time: 0.005316 sec
+
+n = 900
+start time: 71822
+end time: 78321
+total time: 0.006499 sec
+
+n = 1000
+start time: 96985
+end time: 105292
+total time: 0.008307 sec
+
+n = 1100
+start time: 127346
+end time: 136349
+total time: 0.009003 sec
+
+n = 1200
+start time: 163005
+end time: 174894
+total time: 0.011889 sec
+
+n = 1300
+start time: 207167
+end time: 221868
+total time: 0.014701 sec
+
+n = 1400
+start time: 258704
+end time: 274822
+total time: 0.016118 sec
+
+n = 1500
+start time: 317769
+end time: 336634
+total time: 0.018865 sec
+
+n = 1600
+start time: 384219
+end time: 405942
+total time: 0.021723 sec
+
+n = 1700
+start time: 460132
+end time: 484908
+total time: 0.024776 sec
+
+n = 1800
+start time: 544294
+end time: 571145
+total time: 0.026851 sec
+
+n = 1900
+start time: 636594
+end time: 667237
+total time: 0.030643 sec
+
+n = 2000
+start time: 741633
+end time: 775839
+total time: 0.034206 sec
+
+n = 2100
+start time: 857523
+end time: 894566
+total time: 0.037043 sec
+
+n = 2200
+start time: 984993
+end time: 1025923
+total time: 0.040930 sec
+
+n = 2300
+start time: 1123656
+end time: 1168394
+total time: 0.044738 sec
+
+n = 2400
+start time: 1273637
+end time: 1320556
+total time: 0.046919 sec
+
+n = 2500
+start time: 1432723
+end time: 1482950
+total time: 0.050227 sec
+
+n = 2600
+start time: 1605070
+end time: 1660397
+total time: 0.055327 sec
+
+n = 2700
+start time: 1794147
+end time: 1855632
+total time: 0.061485 sec
+
+n = 2800
+start time: 1998001
+end time: 2058647
+total time: 0.060646 sec
+
+n = 2900
+start time: 2209080
+end time: 2274393
+total time: 0.065313 sec
+
+n = 3000
+start time: 2434957
+end time: 2506545
+total time: 0.071588 sec
+

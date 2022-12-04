@@ -55,10 +55,19 @@ class polynomial {
             }
         }
 
-        // void multiply(polynomial a, polynomial b) {
-        //     term* cur_a = 
-        //     while (a)
-        // }
+        void multiply(polynomial a, polynomial b) {
+            term* cur_a = a.head;
+            term* cur_b = b.head;
+
+            while (cur_a) {
+                cur_b = b.head;
+                while (cur_b) {
+                    insert(cur_a->coef * cur_b->coef, cur_a->exp + cur_b->exp);
+                    cur_b = cur_b->next;
+                }
+                cur_a = cur_a->next;
+            }
+        }
 
         void print() {
             term* cur = head;
@@ -111,7 +120,7 @@ class polynomial {
 
 int main() { 
     int term_a, term_b, coef, exp;
-    polynomial a, b;
+    polynomial a, b, c;
 
     cout << "enter term a : ";
     cin >> term_a;
@@ -134,6 +143,10 @@ int main() {
 
     cout << "polynomial b :" << endl;
     b.print();
+
+    c.multiply(a, b);
+    cout << "polynomial c :" << endl;
+    c.print();
 
     return 0;
 }

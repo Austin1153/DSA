@@ -138,6 +138,8 @@ class polynomial {
 int main() { 
     int term_a, term_b, coef, exp;
     polynomial a, b, c;
+    clock_t start_t, end_t;
+    float total_t;
 
     cout << "enter term a : ";
     cin >> term_a;
@@ -179,9 +181,17 @@ int main() {
     cout << "polynomial b :" << endl;
     b.print();
 
+    start_t = clock();
     c.multiply(a, b);
+    end_t = clock();
+    total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
+
     cout << "polynomial c :" << endl;
     c.print();
+
+    cout << "start time: " << start_t << endl;
+    cout << "end time: " << end_t << endl;
+    cout << fixed << "total time: " << total_t << " sec\n" << endl;
 
     return 0;
 }

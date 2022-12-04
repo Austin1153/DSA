@@ -1,7 +1,21 @@
 #include <iostream>
 #include <ctime>
-
+#include <cstdlib>
+#define RANDOM_RANGE_coef 10
+#define RANDOM_RANGE_exp 5
 using namespace std;
+
+int random(int n, bool neg) {
+    int ran = 0;
+
+    ran = rand() % n;
+    if (neg) {
+        if (!(rand() % 5))
+            ran = -ran;
+    }
+
+    return ran;
+}
 
 class term {
     friend class polynomial;
@@ -29,6 +43,9 @@ class polynomial {
             term* cur = head;
             term* tmp;
             bool flag = 1;  //determine if inserted for exit while()
+
+            if (c == 0)  //c = 0, empty term
+                return;
 
             if (!head)  //if initial insert
                 head = new term(c, e);
@@ -124,18 +141,36 @@ int main() {
 
     cout << "enter term a : ";
     cin >> term_a;
-    for (int i = 0; i < term_a; i++) {
-        cout << "enter coef exp " << i << " : ";
-        cin >> coef >> exp;
-        a.insert(coef, exp);
+    if (term_a > 10) {
+        for (int i = 0; i < term_a; i++) {
+            coef = random(RANDOM_RANGE_coef, true);
+            exp = random(RANDOM_RANGE_exp, false);
+            a.insert(coef, exp);
+            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
+        }
+    } else {
+        for (int i = 0; i < term_a; i++) {
+            cout << "enter coef exp " << i << " : ";
+            cin >> coef >> exp;
+            a.insert(coef, exp);
+        }
     }
 
     cout << "enter term b : ";
     cin >> term_b;
-    for (int i = 0; i < term_b; i++) {
-        cout << "enter coef exp " << i << " : ";
-        cin >> coef >> exp;
-        b.insert(coef, exp);
+    if (term_b > 10) {
+        for (int i = 0; i < term_b; i++) {
+            coef = random(RANDOM_RANGE_coef, true);
+            exp = random(RANDOM_RANGE_exp, false);
+            b.insert(coef, exp);
+            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
+        }
+    } else {
+        for (int i = 0; i < term_b; i++) {
+            cout << "enter coef exp " << i << " : ";
+            cin >> coef >> exp;
+            b.insert(coef, exp);
+        }
     }
 
     cout << "polynomial a :" << endl;

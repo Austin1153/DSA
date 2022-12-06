@@ -1,8 +1,11 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
-#define RANDOM_RANGE_coef 10
-#define RANDOM_RANGE_exp 5
+#define RANDOM_RANGE_coef 100
+#define RANDOM_RANGE_exp 1000
+#define TERM_LIMIT 100
+#define NEGATIVE_coef true
+#define NEGATIVE_exp true
 using namespace std;
 
 int random(int n, bool neg) {
@@ -90,7 +93,7 @@ class polynomial {
             term* cur = head;
             //if empty poly
             if (!head) {
-                cout << "NULL, the polynomial is empty";
+                cout << "0 or NULL, the polynomial is empty" << endl;
                 return;
             }
             //if poly = 0;
@@ -98,19 +101,30 @@ class polynomial {
                 cout << '0' << endl;
                 return;
             }
-            //if only constant
-            if (head->exp == 0 && head->next == NULL) {
-                cout << head->coef << endl; 
-                return;
-            }
-             //if only coef * x
-            if (head->exp == 1 && head->next == NULL) {
-                cout << head->coef << 'x' << endl;
-                return;
-            }
             //print head
-            cout << cur->coef << "x^" << cur->exp << ' '; 
-            //print rest term
+            if (head->coef != 1 || head->exp == 0)
+                cout << head->coef;
+            if (head->exp != 0 && head->coef != 0) { //if constant
+                cout << 'x';
+                if (head->exp != 1) //if only ax^1
+                    cout << '^' << cur->exp;
+            }
+            cout << ' ';
+            //if only 1 term
+            if (head->next == NULL) {
+                cout << endl;
+                return;
+            }
+            //if only coef * x
+            // if (head->exp == 1 && head->next == NULL) {
+            //     if (head->coef != 1)
+            //         cout << head->coef;
+            //     cout << 'x' << endl;
+            //     return;
+            // }
+            // //print head
+            // cout << cur->coef << "x^" << cur->exp << ' '; 
+            // //print rest term
             while (cur->next) {
                 cur = cur->next;
                 //if term = 0
@@ -118,14 +132,17 @@ class polynomial {
                     continue;
                 //determine coef is + or -
                 if (cur->coef > 0)
-                    cout << "+ " << cur->coef;
+                    cout << "+ ";
                 else
-                    cout << "- " << abs(cur->coef);
+                    cout << "- ";
+                //if |coef| = 1, only print x
+                if (abs(cur->coef) != 1 || cur->exp == 0)
+                    cout << abs(cur->coef);
                 //if exp >= 1 => print x
-                if (cur->exp >= 1)
+                if (cur->exp != 0)
                     cout << 'x';
                 //if exp > 1 => print exp
-                if (cur->exp > 1)
+                if (cur->exp != 1 && cur->exp != 0)
                     cout << '^' << cur->exp;
                 
                 cout << ' ';
@@ -140,13 +157,14 @@ int main() {
     polynomial a, b, c;
     clock_t start_t, end_t;
     float total_t;
+    srand(time(NULL));
 
     cout << "enter term a : ";
     cin >> term_a;
-    if (term_a > 10) {
+    if (term_a > TERM_LIMIT) {
         for (int i = 0; i < term_a; i++) {
             coef = random(RANDOM_RANGE_coef, true);
-            exp = random(RANDOM_RANGE_exp, false);
+            exp = random(RANDOM_RANGE_exp, true);
             a.insert(coef, exp);
             cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
         }
@@ -160,10 +178,10 @@ int main() {
 
     cout << "enter term b : ";
     cin >> term_b;
-    if (term_b > 10) {
+    if (term_b > TERM_LIMIT) {
         for (int i = 0; i < term_b; i++) {
-            coef = random(RANDOM_RANGE_coef, true);
-            exp = random(RANDOM_RANGE_exp, false);
+            coef = random(RANDOM_RANGE_coef, NEGATIVE_coef);
+            exp = random(RANDOM_RANGE_exp, NEGATIVE_exp);
             b.insert(coef, exp);
             cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
         }

@@ -6,6 +6,7 @@
 #define TERM_LIMIT 100
 #define NEGATIVE_coef true
 #define NEGATIVE_exp true
+#define DENSE_MULTIPLY true
 using namespace std;
 
 int random(int n, bool neg) {
@@ -41,7 +42,18 @@ class polynomial {
         polynomial() {
             head = NULL;
         }
-
+        // ~polynomial() {
+        //     term* tmp = head;
+        //     while (head->next) {
+        //         tmp = head->next;
+        //         delete head;
+        //         head = tmp;
+        //     }
+        //     delete head;
+        // }
+        term* get_head() {
+            return head;
+        }
         void insert(int c, int e) {
             term* cur = head;
             term* tmp;
@@ -75,16 +87,59 @@ class polynomial {
             }
         }
 
-        void multiply(polynomial a, polynomial b) {
+        term* insert_dense(int c, int e, term* last) {
+            if (!head) {
+                head = new term(c, e);
+                return head;
+            } else {
+                last->next = new term(c, e);
+                return last->next;
+            }
+        }
+
+        void add_dense(polynomial an_x_b) {
+            term* add_cur = an_x_b.get_head();
+            term* c_cur = head;
+
+            if (!head) {
+                head = insert_dense(add_cur->coef, add_cur->exp, head);
+                add_cur = add_cur->next;
+                c_cur = head;
+            }
+            
+            while (add_cur) {
+                if (add_cur->exp == c_cur->exp) {
+                    c_cur->coef += add_cur->coef;
+                    add_cur = add_cur->next;
+                } else if (!c_cur->next) {
+                    c_cur->next = new term(add_cur->coef, add_cur->exp);
+                    c_cur = c_cur->next;
+                    add_cur = add_cur->next;
+                } else
+                    c_cur = c_cur->next;
+            }
+        }
+
+        void multiply(polynomial a, polynomial b, bool dense) {
             term* cur_a = a.head;
             term* cur_b = b.head;
 
             while (cur_a) {
                 cur_b = b.head;
+
+                polynomial* add = new polynomial();
+                term* last = NULL;
                 while (cur_b) {
-                    insert(cur_a->coef * cur_b->coef, cur_a->exp + cur_b->exp);
+                    if (dense)
+                        last = add->insert_dense(cur_a->coef * cur_b->coef, cur_a->exp + cur_b->exp, last);
+                    else
+                        insert(cur_a->coef * cur_b->coef, cur_a->exp + cur_b->exp);
                     cur_b = cur_b->next;
                 }
+                if (dense) 
+                    add_dense(*add);
+                delete add;
+                
                 cur_a = cur_a->next;
             }
         }
@@ -200,7 +255,7 @@ int main() {
     b.print();
 
     start_t = clock();
-    c.multiply(a, b);
+    c.multiply(a, b, DENSE_MULTIPLY);
     end_t = clock();
     total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
 

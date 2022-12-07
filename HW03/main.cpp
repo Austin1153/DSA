@@ -1,18 +1,21 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
-#define RANDOM_RANGE_coef 100
+#define RANDOM_RANGE_coef 10
 #define RANDOM_RANGE_exp 1000
-#define TERM_LIMIT 100
+#define TERM_LIMIT 5
 #define NEGATIVE_coef true
 #define NEGATIVE_exp true
-#define DENSE_MULTIPLY true
+#define DENSE_MULTIPLY false
+#define DENSE_INPUT false
 using namespace std;
 
-int random(int n, bool neg) {
+int random(int n, bool neg, bool zero) {
     int ran = 0;
 
     ran = rand() % n;
+    if (!zero)
+        ran++;
     if (neg) {
         if (!(rand() % 5))
             ran = -ran;
@@ -97,32 +100,35 @@ class polynomial {
             }
         }
 
-        void add_dense(polynomial an_x_b) {
+        term* add_dense(polynomial an_x_b, term* start) {
             term* add_cur = an_x_b.get_head();
-            term* c_cur = head;
+            term* c_cur = start;
 
             if (!head) {
-                head = insert_dense(add_cur->coef, add_cur->exp, head);
-                add_cur = add_cur->next;
-                c_cur = head;
+                while (add_cur) {
+                    c_cur = insert_dense(add_cur->coef, add_cur->exp, c_cur);
+                    add_cur = add_cur->next;
+                }
+                return head;
             }
             
             while (add_cur) {
-                if (add_cur->exp == c_cur->exp) {
-                    c_cur->coef += add_cur->coef;
-                    add_cur = add_cur->next;
-                } else if (!c_cur->next) {
+                if (!c_cur->next) {
                     c_cur->next = new term(add_cur->coef, add_cur->exp);
-                    c_cur = c_cur->next;
-                    add_cur = add_cur->next;
-                } else
-                    c_cur = c_cur->next;
+                    break;
+                }
+                c_cur = c_cur->next;
+                c_cur->coef += add_cur->coef;
+                add_cur = add_cur->next;
             }
+
+            return start->next;
         }
 
         void multiply(polynomial a, polynomial b, bool dense) {
             term* cur_a = a.head;
             term* cur_b = b.head;
+            term* tmp;
 
             while (cur_a) {
                 cur_b = b.head;
@@ -137,7 +143,7 @@ class polynomial {
                     cur_b = cur_b->next;
                 }
                 if (dense) 
-                    add_dense(*add);
+                    tmp = add_dense(*add, tmp);
                 delete add;
                 
                 cur_a = cur_a->next;
@@ -170,16 +176,7 @@ class polynomial {
                 cout << endl;
                 return;
             }
-            //if only coef * x
-            // if (head->exp == 1 && head->next == NULL) {
-            //     if (head->coef != 1)
-            //         cout << head->coef;
-            //     cout << 'x' << endl;
-            //     return;
-            // }
-            // //print head
-            // cout << cur->coef << "x^" << cur->exp << ' '; 
-            // //print rest term
+            //print rest term
             while (cur->next) {
                 cur = cur->next;
                 //if term = 0
@@ -217,12 +214,21 @@ int main() {
     cout << "enter term a : ";
     cin >> term_a;
     if (term_a > TERM_LIMIT) {
-        for (int i = 0; i < term_a; i++) {
-            coef = random(RANDOM_RANGE_coef, true);
-            exp = random(RANDOM_RANGE_exp, true);
-            a.insert(coef, exp);
-            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
-        }
+        if (DENSE_INPUT) {
+            exp = random(RANDOM_RANGE_exp, NEGATIVE_exp, true);
+            for (int i = 0; i < term_a; i++) {
+                coef = random(RANDOM_RANGE_coef, NEGATIVE_coef, false);
+                a.insert(coef, exp + i);
+                cout << "coef exp " << i << " : " << coef << ' ' << exp+i << endl;        
+            }
+        } else {            
+            for (int i = 0; i < term_a; i++) {
+                coef = random(RANDOM_RANGE_coef, NEGATIVE_coef, true);
+                exp = random(RANDOM_RANGE_exp, NEGATIVE_exp, true);
+                a.insert(coef, exp);
+                cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;        
+            }
+        }       
     } else {
         for (int i = 0; i < term_a; i++) {
             cout << "enter coef exp " << i << " : ";
@@ -234,11 +240,20 @@ int main() {
     cout << "enter term b : ";
     cin >> term_b;
     if (term_b > TERM_LIMIT) {
-        for (int i = 0; i < term_b; i++) {
-            coef = random(RANDOM_RANGE_coef, NEGATIVE_coef);
-            exp = random(RANDOM_RANGE_exp, NEGATIVE_exp);
-            b.insert(coef, exp);
-            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
+        if (DENSE_INPUT) {
+            exp = random(RANDOM_RANGE_exp, NEGATIVE_exp, true);
+            for (int i = 0; i < term_b; i++) {
+                coef = random(RANDOM_RANGE_coef, NEGATIVE_coef, false);
+                b.insert(coef, exp + i);
+                cout << "coef exp " << i << " : " << coef << ' ' << exp+i << endl;        
+            }
+        } else {            
+            for (int i = 0; i < term_b; i++) {
+                coef = random(RANDOM_RANGE_coef, NEGATIVE_coef, true);
+                exp = random(RANDOM_RANGE_exp, NEGATIVE_exp, true);
+                b.insert(coef, exp);
+                cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
+            }
         }
     } else {
         for (int i = 0; i < term_b; i++) {

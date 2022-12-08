@@ -3,10 +3,10 @@
 #include <cstdlib>
 #define RANDOM_RANGE_coef 10
 #define RANDOM_RANGE_exp 1000
-#define TERM_LIMIT 4
+#define TERM_LIMIT 5
 #define NEGATIVE_coef true
 #define NEGATIVE_exp true
-#define DENSE_MULTIPLY false
+#define DENSE_MULTIPLY true
 #define DENSE_INPUT true
 using namespace std;
 

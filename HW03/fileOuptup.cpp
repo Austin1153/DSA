@@ -7,8 +7,8 @@
 #define TERM_LIMIT 4
 #define NEGATIVE_coef true
 #define NEGATIVE_exp true
-#define DENSE_MULTIPLY true
-#define DENSE_INPUT true
+#define DENSE_MULTIPLY false
+#define DENSE_INPUT false
 using namespace std;
 
 class polynomial;
@@ -251,7 +251,7 @@ int main() {
     float total_t;
     srand(time(NULL));
     ofstream csv;
-    csv.open("dense.csv");
+    csv.open("HW03/nondense.csv");
 
     // cout << "enter term a: ";
     // cin >> term_a;
@@ -263,26 +263,30 @@ int main() {
 
     for (int j = 10, i = 10; i <= 10000; j *= 10) {
         for (; i < j*20 && i <= 10000; i += j) {
-            a = new polynomial();
-            b = new polynomial();
-            c = new polynomial();
+            csv << 1000 << ',' << i;
+            for (int count = 0; count < 1; count++) {
+                a = new polynomial();
+                b = new polynomial();
+                c = new polynomial();
 
-            a->enter_polynomial(a, i);
-            b->enter_polynomial(b, 1000);
+                a->enter_polynomial(a, i);
+                b->enter_polynomial(b, 1000);
 
-            start_t = clock();
-            c->multiply(*a, *b, DENSE_MULTIPLY);
-            end_t = clock();
-            total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
+                start_t = clock();
+                c->multiply(*a, *b, DENSE_MULTIPLY);
+                end_t = clock();
+                total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
 
-            csv << 1000 << ',' << i << ',' << total_t << endl;
+                csv << ',' << total_t;
 
-            cout << "m = 1000, n = " << i << endl;
-            cout << "start time: " << start_t << endl;
-            cout << "end time: " << end_t << endl;
-            cout << fixed << "total time: " << total_t << " sec\n" << endl;
+                cout << "m = 1000, n = " << i << endl;
+                cout << "start time: " << start_t << endl;
+                cout << "end time: " << end_t << endl;
+                cout << fixed << "total time: " << total_t << " sec\n" << endl;
 
-            delete a, b, c;
+                delete a, b, c;
+            }
+            csv << endl;
         }
     }
     // cout << "polynomial a :" << endl;

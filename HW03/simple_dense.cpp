@@ -60,8 +60,7 @@ class polynomial {
         void multiply(polynomial a, polynomial b) {
             term* polya = a.head;
             term* polyb = b.head;
-            term* start = head;
-            term* cur;
+            term* start = head, *cur;
             int c, e;
 
             while (polya) {
@@ -74,20 +73,24 @@ class polynomial {
                     if (!head) {
                        head = new term(c, e);
                        polyb = polyb->next;
+                       start = head;
+                       cur = start;
                        continue;
                     }
 
                     if (!cur->next) {
                         cur->next = new term(c, e);
-                        cur =cur->next;
+                        cur = cur->next;
                     } else {
                         cur = cur->next;
-                        cur->coed += c;
+                        cur->coef += c;
                     }
 
                     polyb = polyb->next;
                 }
-                start = start->next;
+                if (polya != a.head) 
+                    start = start->next;
+                
                 polya = polya->next;
             }
         }
@@ -115,13 +118,12 @@ class polynomial {
         }
 };
 
-void nondense_rand(polynomial* poly, int term) {
-    int coef, exp;
-    for (int i = 0; i < term; i++) {
-            coef = rand() % 100;
-            exp = rand() % 50;
-            poly->insert(coef, exp);
-            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
+void dense_rand(polynomial* poly, int term) {
+    int coef;
+    for (int i = term; i > 0; i--) {
+            coef = rand() % 100 + 1;
+            poly->insert(coef, i);
+            cout << "coef exp " << i << " : " << coef << ' ' << i << endl;
         }
 }
 
@@ -135,7 +137,7 @@ int main() {
     cout << "enter term a : ";
     cin >> term_a;
     if (term_a > 100) {
-        nondense_rand(&a, term_a);
+        dense_rand(&a, term_a);
     } else {
         for (int i = 0; i < term_a; i++) {
             cout << "enter coefficient & exp " << i << " : ";
@@ -147,7 +149,7 @@ int main() {
     cout << "enter term b : ";
     cin >> term_b;
     if (term_b > 100) {
-        nondense_rand(&b, term_b);
+        dense_rand(&b, term_b);
     } else {
         for (int i = 0; i < term_b; i++) {
             cout << "enter coefficient & exp " << i << " : ";
@@ -175,3 +177,4 @@ int main() {
     cout << fixed << "total time: " << total_t << " sec\n" << endl;
 
     return 0;
+}

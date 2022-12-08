@@ -1,24 +1,6 @@
 #include <iostream>
 #include <ctime>
-#include <cstdlib>
-#define RANDOM_RANGE_coef 100
-#define RANDOM_RANGE_exp 1000
-#define TERM_LIMIT 100
-#define NEGATIVE_coef true
-#define NEGATIVE_exp true
 using namespace std;
-
-int random(int n, bool neg) {
-    int ran = 0;
-
-    ran = rand() % n;
-    if (neg) {
-        if (!(rand() % 5))
-            ran = -ran;
-    }
-
-    return ran;
-}
 
 class term {
     friend class polynomial;
@@ -45,32 +27,31 @@ class polynomial {
         void insert(int c, int e) {
             term* cur = head;
             term* tmp;
-            bool flag = 1;  //determine if inserted for exit while()
-
-            if (c == 0)  //c = 0, empty term
+            //c = 0, empty term
+            if (c == 0)  
                 return;
-
-            if (!head)  //if initial insert
+            //if initial insert or insert at front
+            if (!head || head->exp < e) {
                 head = new term(c, e);
-            else if (head->exp < e) {  //if insert in front
-                head = new term(c, e); //of head (head.e < insert.e)
                 head->next = cur;
-            } else {
-                while (flag) {
-                    if (cur->exp == e) {  //if exp same, add coef
-                        cur->coef += c;
-                        flag = 0;
-                    } else if (cur->exp < e) { //if exp < e, means
-                        tmp->next = new term(c, e); //inserted in
-                        tmp->next->next = cur; //front of cur
-                        flag = 0;
-                    } else if (!cur->next) { //end of poly, insert
-                        cur->next = new term(c, e); //at last term
-                        flag = 0;
-                    } else {  //still exp > e, goes to next term
-                        tmp = cur;
-                        cur = cur->next;
-                    }
+                return;
+            }   
+            while (cur) {
+                tmp = cur;
+                cur = cur->next;
+                //if last
+                if (tmp->exp == e) {  
+                    tmp->coef += c;
+                    break;
+                //if exp same, add coef
+                } else if (!cur) {
+                    tmp->next = new term(c, e);
+                    break;
+                //if in middle but exp node not created
+                } else if (tmp->exp > e && cur->exp < e) { 
+                    tmp->next = new term(c, e);
+                    tmp->next->next = cur;
+                    break;
                 }
             }
         }
@@ -108,11 +89,22 @@ class polynomial {
             cout << head->coef << "x^" << head->exp << ' ';
             //print rest term
             while (cur->next) {
-                cout << "+ " << head->coef << "x^" << head->exp << ' ';
+                cur = cur->next;
+                cout << "+ " << cur->coef << "x^" << cur->exp << ' ';
             }
             cout << endl;
         }
 };
+
+void nondense_rand(polynomial poly, int term) {
+    int coef, exp;
+    for (int i = 0; i < term; i++) {
+            coef = rand() % 100;
+            exp = rand() % 50;
+            poly.insert(coef, exp);
+            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
+        }
+}
 
 int main() { 
     int term_a, term_b, coef, exp;
@@ -123,16 +115,11 @@ int main() {
 
     cout << "enter term a : ";
     cin >> term_a;
-    if (term_a > TERM_LIMIT) {
-        for (int i = 0; i < term_a; i++) {
-            coef = random(RANDOM_RANGE_coef, true);
-            exp = random(RANDOM_RANGE_exp, true);
-            a.insert(coef, exp);
-            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
-        }
+    if (term_a > 100) {
+        nondense_rand(a, term_a);
     } else {
         for (int i = 0; i < term_a; i++) {
-            cout << "enter coef exp " << i << " : ";
+            cout << "enter coefficient & exp " << i << " : ";
             cin >> coef >> exp;
             a.insert(coef, exp);
         }
@@ -140,25 +127,20 @@ int main() {
 
     cout << "enter term b : ";
     cin >> term_b;
-    if (term_b > TERM_LIMIT) {
-        for (int i = 0; i < term_b; i++) {
-            coef = random(RANDOM_RANGE_coef, NEGATIVE_coef);
-            exp = random(RANDOM_RANGE_exp, NEGATIVE_exp);
-            b.insert(coef, exp);
-            cout << "coef exp " << i << " : " << coef << ' ' << exp << endl;
-        }
+    if (term_b > 100) {
+        nondense_rand(b, term_b);
     } else {
         for (int i = 0; i < term_b; i++) {
-            cout << "enter coef exp " << i << " : ";
+            cout << "enter coefficient & exp " << i << " : ";
             cin >> coef >> exp;
             b.insert(coef, exp);
         }
     }
 
-    cout << "polynomial a :" << endl;
+    cout << "poly a :" << endl;
     a.print();
 
-    cout << "polynomial b :" << endl;
+    cout << "poly b :" << endl;
     b.print();
 
     start_t = clock();
@@ -166,7 +148,7 @@ int main() {
     end_t = clock();
     total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
 
-    cout << "polynomial c :" << endl;
+    cout << "a * b :" << endl;
     c.print();
 
     cout << "start time: " << start_t << endl;

@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <fstream>
 #define RANDOM_RANGE_coef 10
-#define RANDOM_RANGE_exp 10000
+#define RANDOM_RANGE_exp 1000
 #define TERM_LIMIT 4
 #define NEGATIVE_coef true
 #define NEGATIVE_exp true
@@ -251,7 +251,7 @@ int main() {
     float total_t;
     srand(time(NULL));
     ofstream csv;
-    csv.open("HW03/nondense.csv");
+    csv.open("nondense100000.csv");
 
     // cout << "enter term a: ";
     // cin >> term_a;
@@ -261,15 +261,15 @@ int main() {
     // cin >> term_b;
     // b.enter_polynomial(&b, term_b);
 
-    for (int j = 10, i = 10; i <= 10000; j *= 10) {
-        for (; i < j*20 && i <= 10000; i += j) {
-            csv << 1000 << ',' << i;
-            for (int count = 0; count < 1; count++) {
+    // for (int j = 10, i = 10; i <= 10000; j *= 10) {
+    //     for (; i < j*20 && i <= 10000; i += j) {
+            csv << 1000 << ',' << 100000;
+            for (int count = 0; count < 5; count++) {
                 a = new polynomial();
                 b = new polynomial();
                 c = new polynomial();
 
-                a->enter_polynomial(a, i);
+                a->enter_polynomial(a, 100000);
                 b->enter_polynomial(b, 1000);
 
                 start_t = clock();
@@ -279,7 +279,7 @@ int main() {
 
                 csv << ',' << total_t;
 
-                cout << "m = 1000, n = " << i << endl;
+                cout << "m = 1000, n = " << 100000 << endl;
                 cout << "start time: " << start_t << endl;
                 cout << "end time: " << end_t << endl;
                 cout << fixed << "total time: " << total_t << " sec\n" << endl;
@@ -287,8 +287,8 @@ int main() {
                 delete a, b, c;
             }
             csv << endl;
-        }
-    }
+    //     }
+    // }
     // cout << "polynomial a :" << endl;
     // a.print();
 

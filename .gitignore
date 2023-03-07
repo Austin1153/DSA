@@ -493,4 +493,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+### Obsidian ###
+# config dir
+.obsidian/
+.obsidian/*
+.obsidian/*/*
+
 # End of https://www.toptal.com/developers/gitignore/api/c++,vs,macos,windows,c

@@ -15,6 +15,7 @@ The resulting merged list is mergedList\[l:n\], as below.
 	</tr>
 </table>
 
+Code(Template version) :
 ```cpp
 template <class T>
 void Merge(T*initList, T*mergedList, constintl, constintm, constintn){
@@ -28,10 +29,12 @@ void Merge(T*initList, T*mergedList, constintl, constintm, constintn){
 		} else {
 			mergedList[iResult] = initList[i2];i2++;
 		}
-		// 如果第一個串列有剩下的記錄，那麼把它複製完
-		copy (initList + i1, initList + m + 1, mergedList + iResult);
-		// 如果第二個串列有剩下的記錄，那麼把它複製完
-		copy(initList + i2, initList + n + 1, mergedList + iResult);
+	}
+	// 如果第一個串列有剩下的記錄，那麼把它複製完
+	copy (initList + i1, initList + m + 1, mergedList + iResult);
+	// 如果第二個串列有剩下的記錄，那麼把它複製完
+	copy(initList + i2, initList + n + 1, mergedList + iResult);
 }
 ```
+[[Merge_func]] modify by myself, without templete
 

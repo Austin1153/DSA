@@ -135,7 +135,7 @@ void MergeSort(T*a, const int n) {
 }
 ```
 
-###### Example
+###### Exercise
 >Write the status of the list (12, 2, 16, 30, 8, 28, 4, 10, 20, 6, 18) at the end of each phase of MergeSort(Program 7.9)
 ```mermaid
 graph TD

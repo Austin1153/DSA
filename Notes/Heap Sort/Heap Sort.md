@@ -6,7 +6,7 @@
 Heap sort uses the **max-heap** structure.
 1. The n records are inserted into an empty heap.
 2. The records are extracted from the heap one at a time (**extracted from root**). With the use of a special function [[#Adjust Function]], we can create a heap of n records **faster**.
-* If the depth of heap tree is d, the computing time of [[#Adjust Function]] is $O(d)$
+* If the depth of [[heap]] tree is d, the computing time of [[#Adjust Function]] is $O(d)$
 
 #### Example
 Initialize the heap
@@ -18,7 +18,7 @@ Sorting use Adjust function
 ```cpp
 // 調整一棵樹根為root的二元樹使其符合堆積的性質。此時root的左、右子樹都已經符合堆積的性質。沒有一個節點的索引值 > n
 template <class T>
-void Adjust(T*a,const int root, const int n){ 
+void Adjust(T*a, const int root, const int n){ 
 	// 找到e的適當位置
 	T e = a[root];
 	for (int j = 2*root; j <= n; j *= 2) {
@@ -36,6 +36,236 @@ void Adjust(T*a,const int root, const int n){
 ### Heap Sort
 ```cpp
 template <class T>
-void HeapSort(T*a,const int n) {
-// 將a[1:n] 排序成非遞減的順序for (inti= n/2;i>= 1; i--) // 建立堆積Adjust(a, i,n);for (i= n-1; i>= 1; i--)// 排序{swap(a[1], a[i+1]); // 對調目前堆疊中的第一個與最後一個Adjust(a, 1, i); // 建立堆疊}}
+// 將a[1:n] 排序成非遞減的順序
+void HeapSort(T*a, const int n) {
+	// 建立堆積
+	for (int i= n/2; i >= 1; i--) 
+		Adjust(a, i, n);
+	// 排序
+	for (int i = n-1; i >= 1; i--) {
+		// 對調目前堆疊中的第一個與最後一個
+		swap(a[1], a[i+1]); 
+		// 建立堆疊
+		Adjust(a, 1, i); 
+	}
+}
 ```
+
+##### Example
+>Write the status of list {12, 2, 16, 30, 8, 28, 4, 10, 20, 6, 18} at the end of the first for loop as well as the end of each iteration of the second for loop of HeapSort
+
+Initial 
+```mermaid
+graph TD
+	A((12)) --> B((2))
+	A --> C((16))
+	B --> D((30))
+	B --> E((8))
+	C --> F((28))	
+	C --> G((4))
+	D --> H((10))
+	D --> I((20))
+	E --> J((6))
+	E --> K((18))
+```
+|12|2|16|30|8|28|4|10|20|6|18|
+|--|--|--|--|--|--|--|--|--|--|--|
+After 1<sup>st</sup> for loop
+```mermaid
+graph TD
+	A((12))
+	B((2))
+	C((16))
+	D((30))
+	E((8))
+	F((28))
+	G((4))
+	H((10))
+	I((20))
+	J((6))
+	K((18))
+	D --> I
+	D --> F
+	I --> A
+	I --> K
+	F --> C
+	F --> G
+	A --> H
+	A --> B
+	K --> J
+	K --> E
+```
+|value|30|20|28|12|18|16|4|10|2|6|8|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 10
+```mermaid
+graph TD
+	A((12))
+	B((2))
+	C((16))
+	E((8))
+	F((28))
+	G((4))
+	H((10))
+	I((20))
+	J((6))
+	K((18))
+	F --> I
+	F --> C
+	I --> A
+	I --> K
+	C --> E
+	C --> G
+	A --> H
+	A --> B
+	K --> J
+```
+|value|28|20|16|12|18|8|4|10|2|6|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 9
+```mermaid
+graph TD
+	A((12))
+	B((2))
+	C((16))
+	E((8))
+	G((4))
+	H((10))
+	I((20))
+	J((6))
+	K((18))
+	I --> K
+	I --> C
+	K --> A
+	K --> J
+	C --> E
+	C --> G
+	A --> H
+	A --> B
+```
+|value|20|18|16|12|6|8|4|10|2|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 8
+```mermaid
+graph TD
+	A((18))
+	B((12))
+	C((16))
+	D((10))
+	E((6))
+	F((8))
+	G((4))
+	H((2))
+	A --> B
+	A --> C
+	B --> D
+	B --> E
+	C --> F
+	C --> G
+	D --> H
+```
+|value|18|12|16|10|6|8|4|2|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 7
+```mermaid
+graph TD
+	A((16))
+	B((12))
+	C((8))
+	D((10))
+	E((6))
+	F((2))
+	G((4))
+	A --> B
+	A --> C
+	B --> D
+	B --> E
+	C --> F
+	C --> G
+```
+|value|16|12|8|10|6|2|4|18|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 6
+```mermaid
+graph TD
+	A((12))
+	B((10))
+	C((8))
+	D((4))
+	E((6))
+	F((2))
+	A --> B
+	A --> C
+	B --> D
+	B --> E
+	C --> F
+```
+|value|12|10|8|4|6|2|16|18|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 5
+```mermaid
+graph TD
+	A((10))
+	B((4))
+	C((8))
+	D((2))
+	E((6))
+	A --> B
+	A --> C
+	B --> D
+	B --> E
+```
+|value|10|4|8|2|6|12|16|18|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 4
+```mermaid
+graph TD
+	A((8))
+	B((4))
+	C((6))
+	D((2))
+	A --> B
+	A --> C
+	B --> D
+```
+|value|8|4|6|2|10|12|16|18|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 3
+```mermaid
+graph TD
+	A((6))
+	B((4))
+	C((2))
+	A --> B
+	A --> C
+```
+|value|6|4|2|8|10|12|16|18|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 2
+```mermaid
+graph TD
+	A((2))
+	B((4))
+	B --> A
+```
+|value|4|2|6|8|10|12|16|18|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+2<sup>nd</sup> for loop, i = 1
+```mermaid
+graph TD
+	A((2))
+```
+|value|2|4|6|8|10|12|16|18|20|28|30|
+|--|--|--|--|--|--|--|--|--|--|--|--|
+|\[ i \]|\[1\]|\[2\]|\[3\]|\[4\]|\[5\]|\[6\]|\[7\]|\[8\]|\[9\]|\[10\]|\[11\]|
+Thus is the final result

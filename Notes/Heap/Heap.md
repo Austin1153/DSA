@@ -18,6 +18,6 @@ graph TD
 
 #### Analysis of Max Heap
 * **IsEmpty** 直接檢查是否有root --> $O(1)$
-* **Top** 找出最大值à最大值就是root --> $O(1)$
+* **Top** 找出最大值,最大值就是root --> $O(1)$
 * **Pop**拿出最大值之後，再把root補滿
 * **Push**插入一個值

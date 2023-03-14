@@ -1,3 +1,4 @@
+* Stable Sort
 ##### Time complexiety
 * The time required is $n-l+1$ as all elements in List a & b going throngh the Merge only. So is $O(n-l+1)$ when each record have size of 1.
 * If record have size s (contain multiple data in a record), is $O(s(n-l+1))$ as each record has to be moved entirely.

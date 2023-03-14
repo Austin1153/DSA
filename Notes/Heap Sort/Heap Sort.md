@@ -18,7 +18,7 @@ Sorting use Adjust function
 ```cpp
 // 調整一棵樹根為root的二元樹使其符合堆積的性質。此時root的左、右子樹都已經符合堆積的性質。沒有一個節點的索引值 > n
 template <class T>
-void Adjust(T*a, const int root, const int n){ 
+void Adjust(T *a, const int root, const int n){ 
 	// 找到e的適當位置
 	T e = a[root];
 	for (int j = 2*root; j <= n; j *= 2) {
@@ -37,9 +37,9 @@ void Adjust(T*a, const int root, const int n){
 ```cpp
 template <class T>
 // 將a[1:n] 排序成非遞減的順序
-void HeapSort(T*a, const int n) {
+void HeapSort(T *a, const int n) {
 	// 建立堆積
-	for (int i= n/2; i >= 1; i--) 
+	for (int i = n/2; i >= 1; i--) 
 		Adjust(a, i, n);
 	// 排序
 	for (int i = n-1; i >= 1; i--) {

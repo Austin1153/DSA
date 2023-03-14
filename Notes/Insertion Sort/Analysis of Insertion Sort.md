@@ -1,3 +1,4 @@
+* Stable Sort
 Insertion: $O(n)$
 * In the worst case, Insert(e, a, i) makes i+1 comparisons
 Insertion sort: $O(n^2)$
@@ -21,8 +22,9 @@ void Insert(const T &e, T *a, int i) { //i = j-1
 	a[i+1] = e;
 }
 ```
-$O( \sum_{i=1}^{n-1}(i+1)) = O(n^2)$
+$$O( \sum_{i=1}^{n-1}(i+1)) = O(n^2)$$
 
-#### LOO
+### LOO
 ![[Insertion_sort_LOO.png]]
+Therefore, if **k << n** (very few record are LOO) or **n<=30** (small n), then insertion sort might be a good sorting choice.
 

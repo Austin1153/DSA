@@ -34,9 +34,10 @@ void Merge(T*initList, T*mergedList, const int l, const int m, const int n){
 }
 ```
 
-### [[Analysis of Merge]]
+### Analysis of Merge
 Time Complexiety : $O(s(n-l+1))$ with record size s, or can say $O(n)$ if sorted List is from \[i:n\]
 Space Complexiety : $n-l+1$ record space 
+![[Analysis of Merge]]
 
 ## Merge Sort
 Divide the Pronblem using [[#Merge Pass]], Passing groups from L<sub>n</sub> to L<sub>n+1</sub>, which wil reduce the numbers of groups in half, as group size \*2, using [[Merge]], as figure below.
@@ -166,6 +167,5 @@ graph TD
 	L4_1 --> L5[2, 4, 6, 8, 10 ,12, 16, 18, 20, 28, 30]
 	L4_2 --> L5
 ```
-#### [[Analysis of Merge Sort]]
-#### [[Variation-Nature Merge Sort]]
+#### ![[Analysis of Merge Sort]]
 

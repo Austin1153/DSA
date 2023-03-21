@@ -7,7 +7,7 @@ using namespace std;
 void Random(int *arr, int n) {
     srand(time(NULL));
     for (int i = 0; i < n; i++) {
-        arr[i] = rand()%50000;
+        arr[i] = (rand()+rand())%50000;
     }
 }
 

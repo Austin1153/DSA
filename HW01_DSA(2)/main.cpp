@@ -4,10 +4,11 @@
 
 using namespace std;
 
-void Random(int *arr, int m, int n) {
+void Random(int *arr, int mode, int n) {
     srand(time(NULL));
-    for (int i = m; i < n; i++) {
-        arr[i] = rand()%50000;
+    mode = (!mode) ? 1 : 0;
+    for (int i = mode; i < n; i++) {
+        arr[i] = (rand()+rand())%50000;
     }
 }
 
@@ -65,21 +66,50 @@ void QuickSort(int *array, int left, int right) {
 
 int main() {
     int n, SortType, m;
-    cout << "Enter Sorting Type:\n0: Insertion\n1: Heap\n2:Quick\n";
+    clock_t start_t, end_t;
+    float total_t;
+    cout << "Enter Sorting Type:\n0: Insertion\n1: Heap\n2: Quick\n";
     cin >> SortType;
     cout << "Enter how many random numbers to generate: ";
     cin >> n;
 
     // Initial Array
-    m = SortType ? n+1 : n;
+    m = SortType ? n : n+1;
     int *arr = new int[m]();
-    //init Random int array
-    Random(arr, 1, n+1);
-    PrintArray(arr, n+1);
-    // Insertion sort
-    InsertionSort(arr, n);
-    PrintArray(arr, n+1);
+    // Randomize int array
+    Random(arr, SortType, m);
+    cout << "The Random Number Generate as below\n";
+    PrintArray(arr, m);
+    cout << "--------------------" << endl;
+    
+    // Sorting Selection
+    switch (SortType) {
+    case 0: //Insertion Sort
+        start_t = clock();
+        InsertionSort(arr, n);
+        end_t = clock();
+        cout << "Insertion ";
+        break;
+    case 1: //Heap Sort
+        start_t = clock();
+        HeapSort(arr, n);
+        end_t = clock();
+        cout << "Heap ";
+        break;
+    case 2: //Quick Sort
+        start_t = clock();
+        QuickSort(arr, 0, n-1);
+        end_t = clock();
+        cout << "Quick ";
+    }
 
+    cout << "Sort Result" << endl;
+    PrintArray(arr, m);
+    total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
+
+    cout << "start time: " << start_t << endl;
+    cout << "end time: " << end_t << endl;
+    cout << fixed << "total time: " << total_t << "sec" << endl;
     delete [] arr;
 
     return 0;

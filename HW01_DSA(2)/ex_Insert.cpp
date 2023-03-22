@@ -3,7 +3,7 @@
 #include <ctime>
 #include <fstream>
 #include <string>
-#define EX_FILE_NAME "Heap.csv"
+#define EX_FILE_NAME "Sorting.csv"
 using namespace std;
 
 void Random(int *arr, int mode, int n) {
@@ -73,12 +73,13 @@ int main() {
     ofstream out;
     string type[3] = {"Insertion", "Heap", "Quick"};
 
-    cout << "Enter Sorting Type:\n0: Insertion\n1: Heap\n2: Quick\n";
-    cin >> SortType;
+    // cout << "Enter Sorting Type:\n0: Insertion\n1: Heap\n2: Quick\n";
+    // cin >> SortType;
     // cout << "Enter how many random numbers to generate: ";
     // cin >> n;
 
     out.open(EX_FILE_NAME);
+    for (SortType = 0; SortType <= 2; SortType++) {
     out << type[SortType] << endl;
     for (int i = 10; i <= 100000; i*=10) (i == 100000) ? out << i << endl : out << i << ',';
 
@@ -127,7 +128,7 @@ int main() {
             delete [] arr;
         }
     }
-
+    }
     out.close();
 
     return 0;

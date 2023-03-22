@@ -82,47 +82,50 @@ int main() {
     out << type[SortType] << endl;
     for (int i = 10; i <= 100000; i*=10) (i == 100000) ? out << i << endl : out << i << ',';
 
-    for (n = 10; n <= 100000; n *= 10) {
-        // Initial Array
-        m = SortType ? n : n+1;
-        int *arr = new int[m]();
-        // Randomize int array
-        Random(arr, SortType, m);
-        cout << "The Random Number Generate as below\n";
-        PrintArray(arr, m);
-        cout << "--------------------" << endl;
-        
-        // Sorting Selection
-        switch (SortType) {
-        case 0: //Insertion Sort
-            start_t = clock();
-            InsertionSort(arr, n);
-            end_t = clock();
-            break;
-        case 1: //Heap Sort
-            start_t = clock();
-            HeapSort(arr, n);
-            end_t = clock();
-            break;
-        case 2: //Quick Sort
-            start_t = clock();
-            QuickSort(arr, 0, n-1);
-            end_t = clock();
-            break;
+    for (int ii = 0; ii < 10; ii++) {
+        for (n = 10; n <= 100000; n *= 10) {
+            // Initial Array
+            m = SortType ? n : n+1;
+            int *arr = new int[m]();
+
+            // Randomize int array
+            Random(arr, SortType, m);
+            // cout << "The Random Number Generate as below\n";
+            // PrintArray(arr, m);
+            // cout << "--------------------" << endl;
+            
+            // Sorting Selection
+            switch (SortType) {
+            case 0: //Insertion Sort
+                start_t = clock();
+                InsertionSort(arr, n);
+                end_t = clock();
+                break;
+            case 1: //Heap Sort
+                start_t = clock();
+                HeapSort(arr, n);
+                end_t = clock();
+                break;
+            case 2: //Quick Sort
+                start_t = clock();
+                QuickSort(arr, 0, n-1);
+                end_t = clock();
+                break;
+            }
+
+            cout << type[SortType] << " Sort Result" << endl;
+            // PrintArray(arr, m);
+            total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
+
+            cout << "n = " << n << "; " << ii << "th times" << endl;
+            cout << "start time: " << start_t << endl;
+            cout << "end time: " << end_t << endl;
+            cout << fixed << "total time: " << total_t << "sec\n" << endl;
+            out << fixed << total_t;
+            (n == 100000) ? out << endl : out << ',';
+
+            delete [] arr;
         }
-
-        cout << type[SortType] << " Sort Result" << endl;
-        PrintArray(arr, m);
-        total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
-
-        cout << "n = " << n << endl;
-        cout << "start time: " << start_t << endl;
-        cout << "end time: " << end_t << endl;
-        cout << fixed << "total time: " << total_t << "sec" << endl;
-        out << fixed << total_t;
-        (n == 100000) ? out << endl : out << ',';
-
-        delete [] arr;
     }
 
     out.close();

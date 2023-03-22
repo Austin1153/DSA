@@ -1,12 +1,14 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-
+#include <fstream>
+#include <string>
+#define EX_FILE_NAME "Heap.csv"
 using namespace std;
 
 void Random(int *arr, int mode, int n) {
     srand(time(NULL));
-    mode = (mode) ? 0 : 1;
+    mode = (!mode) ? 1 : 0;
     for (int i = mode; i < n; i++) {
         arr[i] = (rand())%50000;
     }
@@ -68,49 +70,62 @@ int main() {
     int n, SortType, m;
     clock_t start_t, end_t;
     float total_t;
+    ofstream out;
+    string type[3] = {"Insertion", "Heap", "Quick"};
+
     cout << "Enter Sorting Type:\n0: Insertion\n1: Heap\n2: Quick\n";
     cin >> SortType;
-    cout << "Enter how many random numbers to generate: ";
-    cin >> n;
+    // cout << "Enter how many random numbers to generate: ";
+    // cin >> n;
 
-    // Initial Array
-    m = SortType ? n : n+1;
-    int *arr = new int[m]();
-    // Randomize int array
-    Random(arr, SortType, m);
-    cout << "The Random Number Generate as below\n";
-    PrintArray(arr, m);
-    cout << "--------------------" << endl;
-    
-    // Sorting Selection
-    switch (SortType) {
-    case 0: //Insertion Sort
-        start_t = clock();
-        InsertionSort(arr, n);
-        end_t = clock();
-        cout << "Insertion ";
-        break;
-    case 1: //Heap Sort
-        start_t = clock();
-        HeapSort(arr, n);
-        end_t = clock();
-        cout << "Heap ";
-        break;
-    case 2: //Quick Sort
-        start_t = clock();
-        QuickSort(arr, 0, n-1);
-        end_t = clock();
-        cout << "Quick ";
+    out.open(EX_FILE_NAME);
+    out << type[SortType] << endl;
+    for (int i = 10; i <= 100000; i*=10) (i == 100000) ? out << i << endl : out << i << ',';
+
+    for (n = 10; n <= 100000; n *= 10) {
+        // Initial Array
+        m = SortType ? n : n+1;
+        int *arr = new int[m]();
+        // Randomize int array
+        Random(arr, SortType, m);
+        cout << "The Random Number Generate as below\n";
+        PrintArray(arr, m);
+        cout << "--------------------" << endl;
+        
+        // Sorting Selection
+        switch (SortType) {
+        case 0: //Insertion Sort
+            start_t = clock();
+            InsertionSort(arr, n);
+            end_t = clock();
+            break;
+        case 1: //Heap Sort
+            start_t = clock();
+            HeapSort(arr, n);
+            end_t = clock();
+            break;
+        case 2: //Quick Sort
+            start_t = clock();
+            QuickSort(arr, 0, n-1);
+            end_t = clock();
+            break;
+        }
+
+        cout << type[SortType] << " Sort Result" << endl;
+        PrintArray(arr, m);
+        total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
+
+        cout << "n = " << n << endl;
+        cout << "start time: " << start_t << endl;
+        cout << "end time: " << end_t << endl;
+        cout << fixed << "total time: " << total_t << "sec" << endl;
+        out << fixed << total_t;
+        (n == 100000) ? out << endl : out << ',';
+
+        delete [] arr;
     }
 
-    cout << "Sort Result" << endl;
-    PrintArray(arr, m);
-    total_t = (float)(difftime(end_t, start_t) / CLOCKS_PER_SEC);
-
-    cout << "start time: " << start_t << endl;
-    cout << "end time: " << end_t << endl;
-    cout << fixed << "total time: " << total_t << "sec" << endl;
-    delete [] arr;
+    out.close();
 
     return 0;
 }

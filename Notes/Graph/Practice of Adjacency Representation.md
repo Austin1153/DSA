@@ -1,5 +1,5 @@
 > Find V(G) & E(G)
-  Adjacency matrix & Adjacency list
+  [[Adjacency matrix]] & [[Adjacency list]]
 ```mermaid
 graph TD
 	A((V0)) --- B((V1)) & C((V2))
@@ -83,7 +83,8 @@ graph RL
 	V2 --> V1 & V0
 ```
 $V(G) = \{V_0, V_1, V_2, V_3\}$
-$E(G) = \{<V_0, V_3>, <V_1, V_0>, <V_1, V_2>, <V_2, V_1>, <V_2,V_0> \}$Adjacency matrix
+$E(G) = \{<V_0, V_3>, <V_1, V_0>, <V_1, V_2>, <V_2, V_1>, <V_2,V_0> \}$
+Adjacency matrix
 $$\begin {array} {cc}
 \begin {matrix}
 & 0 & 1 & 2 & 3 

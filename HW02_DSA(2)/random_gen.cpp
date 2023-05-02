@@ -1,32 +1,89 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 using namespace std;
-
-typedef struct edge {
-    int head;
-    int tail;
-} edge;
 
 class Graph {
     private:
         int n;
         int e;
-        edge *edges;
+        vector<vector<int> > edges;
     public:
-        Graph(int n, int e) {
-            n = n, e = e;
-            edges = new edge[e]();
+        Graph(int ns, int es) {
+            n = ns, e = es;
         }
         void insert_edge(int head, int tail) {
-            int i = 0;
-            if (edge[i] == NULL) 
+            vector<int> edge;
+            edge.push_back(head);
+            edge.push_back(tail);
+            edges.push_back(edge);
+        }
+        void sort_edge() {
+            vector<vector<int> > elist;
+            
+            // init with <0>
+            vector<int> tmp;
+            tmp.push_back(0);
+            for (int i = 0; i <= n; i++)
+                elist.push_back(tmp);
+            
+            // sort, vertax for 1 to n
+            for (int i = 0; i < e; i++) {
+                // link for first vertax
+                if (elist[edges[i][0]][0] == 0) {
+                    elist[edges[i][0]][0] = edges[i][1];
+                } else
+                    elist[edges[i][0]].push_back(edges[i][1]);
+                // link for 2nd vertax
+                if (elist[edges[i][1]][0] == 0) {
+                    elist[edges[i][1]][0] = edges[i][0];
+                } else
+                    elist[edges[i][1]].push_back(edges[i][0]);
+            }
+            edges = elist;
+        }
+        void print_adj_matrix() {
+            cout <<"   ";
+            for (int i = 1; i <= n; i++)
+                cout << i << ' ';
+            cout << endl;
+            for (int i = 1, k = 0; i <= n; i++, k = 0) {
+                (i < 10) ? cout << ' ' << i << ' ': cout << i << ' ';
+                for (int j = 1; j <= n; j++) {
+                    if (!edges[i][0]) {
+                        cout << 0 << ' ';
+                        continue;
+                    }
+                    if (k >= edges[i].size()) {
+                        cout << 0 << ' ';
+                        continue;
+                    }
+                    if (edges[i][k] == j) {
+                        cout << 1 << ' ';
+                        k++;
+                    } else {
+                        cout << 0 << ' ';
+                    }
+                }
+                cout << endl;
+            }
+        }
+        void print_adj_list() {
+            for (int i = 1; i <= n; i++) {
+                cout << i << " :";
+                for (int j = 0; j < edges[i].size(); j++) {
+                    cout << " <-- " << edges[i][j];
+                }
+                cout << endl;
+            }
+            cout << endl;
         }
 
 };
 
-void random_edge(Graph G, int n, int e) {
+void random_edge(Graph &G, int n, int e) {
     int arr[(n*(n-1))/2];
     for (int i = 0; i < (n*(n-1))/2; i++)
         arr[i] = 0;
@@ -59,7 +116,7 @@ void random_edge(Graph G, int n, int e) {
                 head++;
             }
 
-            G.edges[e++]
+            G.insert_edge(head, head+1 + (i+1 - (j-n+head+1)));
 
             // print head
             cout << '<' << head << ',';
@@ -83,6 +140,10 @@ int main() {
 
     srand(time(NULL));
     random_edge(G, n, e);
+    G.sort_edge();
+    cout << "G-print" << endl;
+    G.print_adj_list();
+    G.print_adj_matrix();
 
     return 0;
 }

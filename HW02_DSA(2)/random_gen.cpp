@@ -15,6 +15,7 @@ class Graph {
         Graph(int ns, int es) {
             n = ns, e = es;
         }
+        void reset_e() {e = edges.size();}
         void insert_edge(int head, int tail) {
             vector<int> edge;
             edge.push_back(head);
@@ -56,9 +57,9 @@ class Graph {
                 (i < 10) ? cout << ' ' << i << ' ': cout << i << ' ';
                 for (int j = 1; j <= n; j++) {
                     // align
-                    if (j > 9) {
+                    if (j > 9) 
                         cout << ' ';
-                    }
+                    
                     if (!edges[i][0]) {
                         cout << 0 << ' ';
                         continue;
@@ -70,9 +71,8 @@ class Graph {
                     if (edges[i][k] == j) {
                         cout << 1 << ' ';
                         k++;
-                    } else {
+                    } else 
                         cout << 0 << ' ';
-                    }
                 }
                 cout << endl;
             }
@@ -85,7 +85,7 @@ class Graph {
                     ((edges[i][j] < 10) ? cout << ' ': cout) << edges[i][j];
                 }
                 cout << endl;
-            }
+            } 
             cout << endl;
         }
         void print_graph(ofstream &out) {
@@ -100,12 +100,34 @@ class Graph {
                 }
             }
         }
+        void DFS_visit(int *color, Graph &G, int node_u) {
+            color[node_u-1] = 1;
+            for (int i = 0; i < edges[node_u].size(); i++) {
+                if (edges[node_u][i] == 0) break;
+                if (color[edges[node_u][i]-1] == 0) {
+                    G.insert_edge(node_u, edges[node_u][i]);
+                    DFS_visit(color, G, edges[node_u][i]);
+                }
+            }
+            color[node_u-1] = 2;
+        }
+        void DFS(Graph &Tree) {
+            int *color = new int[n]();
+            for (int i = 0; i < n; i++)
+                color[i] = 0;
+            for (int i = 0; i < n; i++) {
+                if (color[i] == 0) 
+                    DFS_visit(color, Tree, i+1);
+            }
+            delete [] color;
+            Tree.reset_e();
+        }
         void out_adj_list(ofstream &out);
         void out_adj_matrix(ofstream &out);
         void out_tree_md(ofstream &out);
 };
 
-void random_edge(Graph &G, ofstream &out, int n, int e) {
+void random_edge(Graph &G, int n, int e) {
     int arr[(n*(n-1))/2];
     for (int i = 0; i < (n*(n-1))/2; i++)
         arr[i] = 0;
@@ -137,15 +159,13 @@ void random_edge(Graph &G, ofstream &out, int n, int e) {
                 j += n-head-1;
                 head++;
             }
-
             G.insert_edge(head, head+1 + (i+1 - (j-n+head+1)));
-
             // print head
-            out << '<' << head << ',';
-            out << head+1 + (i+1 - (j-n+head+1)) << '>' << ' ';
+            cout << '<' << head << ',';
+            cout << head+1 + (i+1 - (j-n+head+1)) << '>' << ' ';
         }
     }
-    out << endl;
+    cout << endl;
 }
 
 int main() {
@@ -155,29 +175,51 @@ int main() {
     cout << "Enter number of edges :" << endl;
     cin >> e;
 
-    ofstream out;
-    ofstream csv;
+    ofstream out, dfs_out;
+    ofstream csv, dfs_csv;
     out.open("graph.md");
     csv.open("graph.csv");
+    dfs_out.open("DFS.md");
+    dfs_csv.open("DFS.csv");
 
     Graph G(n, e);
 
-
     srand(time(NULL));
-    random_edge(G, out, n, e);
-    out << "# Graph" << endl;
+    random_edge(G, n, e);
     G.out_tree_md(out);
     
     G.sort_edge();
-    G.print_graph(csv); 
-    cout << "G-print" << endl;
+
     G.print_adj_list();
     G.print_adj_matrix();
+    G.print_graph(csv); 
+    
     G.out_adj_list(out);
     G.out_adj_matrix(out);
 
+    // DFS
+    Graph DFS_Tree(n ,e); 
+    G.DFS(DFS_Tree);
+
+    DFS_Tree.out_tree_md(dfs_out);
+    DFS_Tree.sort_edge();
+
+    cout << "DFS Adj List" << endl;
+    DFS_Tree.print_adj_list();
+    cout << "DFS Adj Matrix" << endl;
+    DFS_Tree.print_adj_matrix();
+    DFS_Tree.print_graph(dfs_csv);
+
+    DFS_Tree.out_adj_list(dfs_out);
+    DFS_Tree.out_adj_matrix(dfs_out);
+
+    // BFS
+
+
     out.close();
     csv.close();
+    dfs_out.close();
+    dfs_csv.close();
 
     return 0;
 }
@@ -198,7 +240,7 @@ void Graph::out_adj_list(ofstream &out) {
         }
         out << "</tr>" << endl;
     }
-    out << "</table>" << endl;
+    out << "</table>\n" << endl;
 }
 
 void Graph::out_adj_matrix(ofstream &out) {
@@ -237,7 +279,11 @@ void Graph::out_adj_matrix(ofstream &out) {
 }
 
 void Graph::out_tree_md(ofstream &out) {
-    out << "```mermaid\n graph TD" << endl;
+    for (int i = 0; i < e; i++) {
+        out << '<' << edges[i][0] << ',' << edges[i][1] << '>' << ' ';
+    }
+
+    out << endl << "```mermaid\n graph TD" << endl;
     for (int i = 0; i < n; i++)
         out << '\t' << 'A' << i+1 << '(' << i+1 << ')' << endl;
     for (int i = 0; i < e; i++) {

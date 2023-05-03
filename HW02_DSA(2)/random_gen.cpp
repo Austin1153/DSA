@@ -88,6 +88,17 @@ class Graph {
             }
             cout << endl;
         }
+        void print_graph(ofstream &out) {
+            for (int i = 1; i <= n; i++) {
+                for (int j = 0; j < edges[i].size(); j++) {
+                    if (edges[i][j] == 0) 
+                        break;
+                    if (edges[i][j] < i)
+                        continue;
+                    out << i << ',' << edges[i][j] << endl;
+                }
+            }
+        }
         void out_adj_list(ofstream &out);
         void out_adj_matrix(ofstream &out);
         void out_tree_md(ofstream &out);
@@ -144,7 +155,9 @@ int main() {
     cin >> e;
 
     ofstream out;
+    ofstream csv;
     out.open("graph.md");
+    csv.open("graph.csv");
 
     Graph G(n, e);
 
@@ -155,6 +168,7 @@ int main() {
     G.out_tree_md(out);
     
     G.sort_edge();
+    G.print_graph(csv);
     cout << "G-print" << endl;
     G.print_adj_list();
     G.print_adj_matrix();
@@ -162,6 +176,7 @@ int main() {
     G.out_adj_matrix(out);
 
     out.close();
+    csv.close();
 
     return 0;
 }
@@ -216,7 +231,7 @@ void Graph::out_adj_matrix(ofstream &out) {
             }
         }
         out << "\\\\" << endl;
-    }
+    } 
     out << "\\end {bmatrix}\n\\end{array}$$\n" << endl;
 }
 

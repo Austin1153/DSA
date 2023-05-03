@@ -89,6 +89,7 @@ class Graph {
             cout << endl;
         }
         void print_graph(ofstream &out) {
+            out << "Head,Tail" << endl;
             for (int i = 1; i <= n; i++) {
                 for (int j = 0; j < edges[i].size(); j++) {
                     if (edges[i][j] == 0) 
@@ -168,7 +169,7 @@ int main() {
     G.out_tree_md(out);
     
     G.sort_edge();
-    G.print_graph(csv);
+    G.print_graph(csv); 
     cout << "G-print" << endl;
     G.print_adj_list();
     G.print_adj_matrix();

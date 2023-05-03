@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -46,12 +47,18 @@ class Graph {
         }
         void print_adj_matrix() {
             cout <<"   ";
+            // print column index
             for (int i = 1; i <= n; i++)
                 cout << i << ' ';
             cout << endl;
             for (int i = 1, k = 0; i <= n; i++, k = 0) {
+                // print row index
                 (i < 10) ? cout << ' ' << i << ' ': cout << i << ' ';
                 for (int j = 1; j <= n; j++) {
+                    // align
+                    if (j > 9) {
+                        cout << ' ';
+                    }
                     if (!edges[i][0]) {
                         cout << 0 << ' ';
                         continue;
@@ -74,16 +81,19 @@ class Graph {
             for (int i = 1; i <= n; i++) {
                 cout << i << " :";
                 for (int j = 0; j < edges[i].size(); j++) {
-                    cout << " <-- " << edges[i][j];
+                    cout << " <-- ";
+                    ((edges[i][j] < 10) ? cout << ' ': cout) << edges[i][j];
                 }
                 cout << endl;
             }
             cout << endl;
         }
-
+        void out_adj_list(ofstream &out);
+        void out_adj_matrix(ofstream &out);
+        void out_tree_md(ofstream &out);
 };
 
-void random_edge(Graph &G, int n, int e) {
+void random_edge(Graph &G, ofstream &out, int n, int e) {
     int arr[(n*(n-1))/2];
     for (int i = 0; i < (n*(n-1))/2; i++)
         arr[i] = 0;
@@ -119,13 +129,11 @@ void random_edge(Graph &G, int n, int e) {
             G.insert_edge(head, head+1 + (i+1 - (j-n+head+1)));
 
             // print head
-            cout << '<' << head << ',';
-            cout << head+1 + (i+1 - (j-n+head+1)) << '>' << endl;
+            out << '<' << head << ',';
+            out << head+1 + (i+1 - (j-n+head+1)) << '>' << ' ';
         }
     }
-
-
-
+    out << endl;
 }
 
 int main() {
@@ -135,15 +143,89 @@ int main() {
     cout << "Enter number of edges :" << endl;
     cin >> e;
 
+    ofstream out;
+    out.open("graph.md");
+
     Graph G(n, e);
 
 
     srand(time(NULL));
-    random_edge(G, n, e);
+    random_edge(G, out, n, e);
+    out << "# Graph" << endl;
+    G.out_tree_md(out);
+    
     G.sort_edge();
     cout << "G-print" << endl;
     G.print_adj_list();
     G.print_adj_matrix();
+    G.out_adj_list(out);
+    G.out_adj_matrix(out);
+
+    out.close();
 
     return 0;
+}
+
+void Graph::out_adj_list(ofstream &out) {
+    out << "### Adjacent List\n" << endl;
+    out << "<table style=\"border-collapse: collapse;\">" << endl;
+    for (int i = 1; i <= n; i++) {
+        out << '\t' << "<tr>" << endl;
+        out << "<th style=\"width: 25px\">[" << i << "]</th>";
+        out << "\t\t" << "<th style=\"border: 2px solid #ffffff; width: 25px\"></th>" << endl;
+        for (int j = 0; j < edges[i].size(); j++) {
+            if (edges[i][j]) {
+                out << "\t\t" << "<th>→</th>" << endl;
+                out << "\t\t" << "<th style=\"border: 2px solid #ffffff; width: 25px\">" << edges[i][j] << "</th>" << endl;
+                out << "\t\t<th style=\"border: 2px solid #ffffff; width: 25px\"></th>" << endl;
+            }
+        }
+        out << "</tr>" << endl;
+    }
+    out << "</table>" << endl;
+}
+
+void Graph::out_adj_matrix(ofstream &out) {
+    out << "### Adjacent Matrix\n" << endl;
+    out << "$$\\begin {array} {cc}\n\\begin {matrix}" << endl;
+    for (int i = 0; i < n; i++) 
+        out << '&' << ' ' << i+1;
+    out << endl;
+    out << "\\end {matrix} \\\\" << endl << "\\begin {matrix}" << endl;
+    for (int i = 1; i <= n; i++) 
+        out << i << ' ' << '\\' << '\\';
+    out << endl;
+    out << "\\end {matrix}\n\\begin {bmatrix}" << endl;
+    for (int i = 1, k = 0; i <= n; i++, k = 0) {
+        for (int j = 1; j <= n; j++) {
+            if (j - 1)
+                out << "& ";
+            if (!edges[i][0]) {
+                out << 0 << ' ';
+                continue;
+            }
+            if (k >= edges[i].size()) {
+                out << 0 << ' ';
+                continue;
+            }
+            if (edges[i][k] == j) {
+                out << 1 << ' ';
+                k++;
+            } else {
+                out << 0 << ' ';
+            }
+        }
+        out << "\\\\" << endl;
+    }
+    out << "\\end {bmatrix}\n\\end{array}$$\n" << endl;
+}
+
+void Graph::out_tree_md(ofstream &out) {
+    out << "```mermaid\n graph TD" << endl;
+    for (int i = 0; i < n; i++)
+        out << '\t' << 'A' << i+1 << '(' << i+1 << ')' << endl;
+    for (int i = 0; i < e; i++) {
+        out << '\t' << 'A' << edges[i][0] << " --- " << 'A' << edges[i][1] << endl;
+    }
+    out << "```" << endl;
 }

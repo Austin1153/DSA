@@ -122,6 +122,17 @@ class Graph {
             delete [] color;
             Tree.reset_e();
         }
+        void BFS(Graph &Tree) {
+            int *color = new int[n]();
+            vector<int> queue;
+            for (int i = 0; i < n; i++)
+                color[i] = 0;
+            // Begin BFS
+            color[0] = 1;
+            queue.push_back(1);
+
+            while()
+        }
         void out_adj_list(ofstream &out);
         void out_adj_matrix(ofstream &out);
         void out_tree_md(ofstream &out);
@@ -214,6 +225,8 @@ int main() {
     DFS_Tree.out_adj_matrix(dfs_out);
 
     // BFS
+    Graph BFS_Tree(n, e);
+
 
 
     out.close();

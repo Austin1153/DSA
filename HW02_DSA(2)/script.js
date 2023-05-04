@@ -1,5 +1,5 @@
 const node_num = 8;
-const values = "1,2> <1,3> <2,4> <2,5> <3,6> <3,7> <4,8";
+const values = "1,3> <1,4> <1,6> <1,9> <1,10> <2,6> <2,8> <3,4> <3,5> <3,7> <3,10> <4,7> <6,10> <8,9> <9,10";
 let nodes = [];
 for(let i = 1; i <= node_num; i++) 
     nodes.push({ data: { id: i } });

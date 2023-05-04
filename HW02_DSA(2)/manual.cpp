@@ -3,6 +3,7 @@
 #include <ctime>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -45,6 +46,10 @@ class Graph {
                     elist[edges[i][1]].push_back(edges[i][0]);
             }
             edges = elist;
+
+            // sort edges adj list in ascending order
+            for (int i = 0; i <= n; i++)
+                sort(edges[i].begin(), edges[i].end());
         }
         void print_adj_matrix() {
             cout <<"   ";

@@ -184,14 +184,14 @@ int main() {
     Graph G(n, e);
     int h, t;
     for (int i = 0; i < e; i++) {
-        cout << "enter edge " << i << "head :";
+        cout << "enter edge " << i << " head :";
         cin >> h;
         if (h > n || h < 1) {
             cout << "invalid head" << endl;
             i--;
             continue;
         }
-        cout << "enter edge " << i << "tail :";
+        cout << "enter edge " << i << " tail :";
         cin >> t;
         if (t > n || t < 1) {
             cout << "invalid tail" << endl;

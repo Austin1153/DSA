@@ -6,8 +6,12 @@ can solve :
   Find a shortest path to given destination vertex rom each vertex v
 * Single-pair shortest-paths problem
   Find a shortest path from u to v for given vertices u and v
-* All-pairs shortest-paths problem
+* All-pairs shortest-paths problem **APSP**
   Find a shortest path from u to v for each pair of vertices u and v
+
+### Algorithm
+1. [[Dijkstra’s algorithm]] (weight > 0)
+2. [[Bellman-Ford algorithm]]
 
 ##### Example
 ```mermaid

@@ -1,5 +1,5 @@
 > Find V(G) & E(G)
-  [[Adjacency matrix]] & [[Adjacency list]]
+  [[Adjacency Matrix]] & [[Adjacency list]]
 ```mermaid
 graph TD
 	A((V0)) --- B((V1)) & C((V2))

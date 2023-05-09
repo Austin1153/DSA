@@ -27,7 +27,7 @@ SSSP Result :
 
 |  k |  A  |  B  |  C  |  D  |  E  |  F  |  G  |  H  |  I  |
 |:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-| 1 | 0 | 7 | 10 | 9 $\rightarrow$ 7 | 4 $\rightarrow$ 5 $\rightarrow$ 2 | 4 $\rightarrow$ 3 | 7 | 5 | 6 $\rightarrow$ 0 |
+| 1 | 0 | 7 | 10 | 9 $\rightarrow$ 7 | 4 $\rightarrow$ 3 $\rightarrow$ 2 | 4 $\rightarrow$ 3 | 7 | 5 | 6 $\rightarrow$ 0 |
 | 2 | 0 | 7 | 10 | 7 | 2 | 3 $\rightarrow$ 1 | 7 | 3 | 0 |
 | 3 | 0 | 7 | 10 | 7 | 2 | 1 | 7 $\rightarrow$ 6 | 3 | 0 $\rightarrow$ -1 |
 | 4 | 0 | 7 | 10 | 7 | 2 | 1 | 6 | 3 | -1 |
